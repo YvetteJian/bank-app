@@ -1,3 +1,10 @@
+# Bank App
+For vulnerability learning and test.
+
+# Contributors:
+Qihui Jian
+Xiaowen Sun
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
