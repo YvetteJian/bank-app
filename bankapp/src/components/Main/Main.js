@@ -22,3 +22,10 @@ export default class Main extends Component{
          );
     }
 }
+
+// TODO
+// button -> balance
+// text field + button -> withdraw (Deduction)
+//   - update balance
+// text field + button -> deposit (Add)
+//   - update balance
