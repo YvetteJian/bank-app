@@ -1,27 +1,27 @@
-import React,{Component} from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default class Main extends Component{
-    constructor(props){
-        super(props);
-        this.state = { 
-        }
-    }
+export default function Main() {
+    const [user, setUser] = useState(null);
 
-    logout = ()=>{
-        localStorage.removeItem('user')
+    useEffect(() => {
+        const userFromLocalStorage = localStorage.getItem('user');
+        setUser(userFromLocalStorage);
+    }, []);
+
+    const logout = () => {
+        localStorage.removeItem('user');
         window.location.reload();
     }
 
-    render(){
-        return(
-            <div>
-               hello {localStorage.getItem("user")}
-               <button onClick={this.logout}>Log out</button>
-            </div>
-            
-         );
-    }
+    return (
+        <div>
+            Hello {user}
+            <br/>
+            <button onClick={logout}>Log out</button>
+        </div>
+    );
 }
+
 
 // TODO
 // button -> balance
