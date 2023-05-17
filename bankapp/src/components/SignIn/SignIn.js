@@ -14,18 +14,18 @@ export default class SignIn extends Component{
 
     login=()=>{
         console.log(this.state.username+this.state.password)
+        // localStorage.setItem("user",this.state.username);
+        // window.location.reload();
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:8080/login', { username:this.state.username, password:this.state.password })
+        .then(response => {
+        console.log(response.data);
         localStorage.setItem("user",this.state.username);
         window.location.reload();
-    //     axios.defaults.withCredentials = true;
-    //     axios.post('http://localhost:8080/login', { username:this.state.username, password:this.state.username })
-    //     .then(response => {
-    //     console.log(response.data);
-    //     localStorage.setItem("user",this.state.username);
-    //     window.location.reload();
-    // })
-    // .catch(error => {
-    //     this.state.loginFail = true;
-    // });
+    })
+    .catch(error => {
+        this.setState({loginFail:true})
+    });
     }
 
     render(){
