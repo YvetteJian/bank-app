@@ -33,7 +33,7 @@ export default class Main extends Component {
             .then((response) => {
                 console.log(response.data);
                 this.setState({
-                    balance: response.data.balance,
+                    balance: response.data.balance.toFixed(2),
                 });
             })
             .catch((error) => {
@@ -42,43 +42,50 @@ export default class Main extends Component {
     };
 
     withdraw = () => {
-        
+
+        const amount = Number(this.state.inputWithdrawValue).toFixed(2);
+
         axios
             .post('http://localhost:8080/withdraw', {
                 username: localStorage.getItem('user'),
-                amount: this.state.inputWithdrawValue,
+                amount: amount
             })
             .then((response) => {
-                console.log(response);
                 this.setState({
-                    balance: response.data.balance,
+                    balance: response.data.balance.toFixed(2),
                     inputWithdrawValue: '',
                 });
                 message.success('Withdraw successfully!');
             })
             .catch((error) => {
-                message.error(error.response.data);
+                if (error.response.status === 500){
+                    console.log(error.response.status)
+                    message.error(error.response.data.trace)}
+                else{message.error(error.response.data);}
                 console.log(this.state.username + this.state.inputWithdrawValue);
             });
     };
 
     deposit = () => {
+        const amount = Number(this.state.inputDepositValue).toFixed(2);
         axios
             .post('http://localhost:8080/deposit', {
                 username: localStorage.getItem('user'),
-                amount: this.state.inputDepositValue,
+                amount: amount
             })
             .then((response) => {
-                console.log(response);
                 this.setState({
-                    balance: response.data.balance,
+                    
+                    balance: response.data.balance.toFixed(2),
                     inputDepositValue: '',
                 });
                 message.success('Deposit successfully!');
             })
             .catch((error) => {
-                message.error(error.response.data);
-                console.log(this.state.username + this.state.inputDepositValue);
+                if (error.response.status === 500){
+                    console.log(error.response.status)
+                    message.error(error.response.data.trace)}
+                else{message.error(error.response.data);}
             });
     };
 
