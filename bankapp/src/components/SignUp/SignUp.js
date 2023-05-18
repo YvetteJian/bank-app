@@ -35,6 +35,7 @@ export default class SignUp extends Component {
             .catch((error) => {
                 console.log(error);
                 this.setState({ errorMsg: error.response.data });
+                message.error(this.state.errorMsg)
             });
     };
 
@@ -99,10 +100,6 @@ export default class SignUp extends Component {
                             placeholder="Initial Balance"
                         />
                     </Form.Item>
-
-                    {this.state.errorMsg && (
-                        <Alert type="error" message={this.state.errorMsg} className="errorMsg" />
-                    )}
 
                     <br/>
 
