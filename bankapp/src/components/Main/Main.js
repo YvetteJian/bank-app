@@ -42,6 +42,7 @@ export default class Main extends Component {
     };
 
     withdraw = () => {
+        
         axios
             .post('http://localhost:8080/withdraw', {
                 username: localStorage.getItem('user'),
@@ -84,23 +85,29 @@ export default class Main extends Component {
     render() {
         return (
             <div className="form-container">
-
-                <div>Hello {localStorage.getItem('user')}</div>
+            <div className='main-container'>
+                <h1>Hello {localStorage.getItem('user')}</h1>
                 <Button type="primary" onClick={this.logout}>
                     Log out
                 </Button>
 
                 <div className="check-balance">
-                    <div>{this.state.balance}</div>
+                    <h1>{this.state.balance}</h1>
                     <Button onClick={this.getDeposit}>Check your balance!</Button>
                 </div>
 
                 <div className="withdraw-balance">
                     <Input
-                        type="number"
+                        type="text"
                         value={this.state.inputWithdrawValue}
                         onChange={(event) => {
-                            this.setState({ inputWithdrawValue: event.target.value });
+                            let value = event.target.value;
+                            const match = value.match(/^\d*(\.\d{0,2})?$/); // Match any number of digits and up to 2 decimal points
+                            if (match) {
+                                value = match[0]; // Use the matched value to allow typing the decimal point
+                                this.setState({ inputWithdrawValue: event.target.value });
+                            }
+                           
                         }}
                         placeholder="Amount"
                     />
@@ -109,14 +116,20 @@ export default class Main extends Component {
 
                 <div className="deposit-balance">
                     <Input
-                        type="number"
+                        type="text"
                         value={this.state.inputDepositValue}
                         onChange={(event) => {
-                            this.setState({ inputDepositValue: event.target.value });
+                            let value = event.target.value;
+                            const match = value.match(/^\d*(\.\d{0,2})?$/); // Match any number of digits and up to 2 decimal points
+                            if (match) {
+                                value = match[0]; // Use the matched value to allow typing the decimal point
+                                this.setState({ inputDepositValue: event.target.value });
+                            }
                         }}
                         placeholder="Amount"
                     />
                     <Button onClick={this.deposit}>Deposit</Button>
+                </div>
                 </div>
             </div>
         );

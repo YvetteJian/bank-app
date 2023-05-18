@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Form, Input, Button, Alert } from 'antd';
+import { Form, Input, Button, Alert, message } from 'antd';
 import {DollarOutlined, LockOutlined, UserOutlined} from "@ant-design/icons";
 
 export default class SignUp extends Component {
@@ -9,8 +9,7 @@ export default class SignUp extends Component {
         this.state = {
             username: null,
             password: null,
-            balance: '0.00',
-            errorMsg: null,
+            balance: '',
         };
     }
 
@@ -34,8 +33,7 @@ export default class SignUp extends Component {
             })
             .catch((error) => {
                 console.log(error);
-                this.setState({ errorMsg: error.response.data });
-                message.error(this.state.errorMsg)
+                message.error(error.response.data)
             });
     };
 
@@ -46,23 +44,6 @@ export default class SignUp extends Component {
             value = match[0]; // Use the matched value to allow typing the decimal point
             this.setState({ balance: value });
         }
-    };
-
-    handleBlur = () => {
-        let value = this.state.balance;
-        if (value.length === 0) {
-            value += "0.00";
-        } else if (!value.includes(".")) {
-            value += ".00";
-        } else {
-            const parts = value.split(".");
-            if (parts[1].length === 0) {
-                value += "00";
-            } else if (parts[1].length === 1) {
-                value += "0";
-            }
-        }
-        this.setState({ balance: value });
     };
 
 
@@ -95,7 +76,6 @@ export default class SignUp extends Component {
                             prefix={<DollarOutlined className="site-form-item-icon" />}
                             type="text"
                             onChange={this.handleBalanceChange}
-                            onBlur={this.handleBlur}
                             value={this.state.balance}
                             placeholder="Initial Balance"
                         />

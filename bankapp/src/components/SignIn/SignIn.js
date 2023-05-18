@@ -10,7 +10,6 @@ export default class SignIn extends Component {
         this.state = {
             username: '',
             password: '',
-            loginFail: false,
         };
     }
 
@@ -32,7 +31,6 @@ export default class SignIn extends Component {
                 }
             })
             .catch((error) => {
-                this.setState({ loginFail: true });
                 message.error('Login unsuccessfully!');
             });
     };
