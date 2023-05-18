@@ -1,41 +1,75 @@
-import React,{Component} from 'react';
-import "./SignIn.css";
+import React, { Component } from 'react';
+import './SignIn.css';
 import axios from 'axios';
+import { Form, Input, Button, Alert } from 'antd';
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
 
-export default class SignIn extends Component{
-    constructor(props){
+export default class SignIn extends Component {
+    constructor(props) {
         super(props);
-        this.state = { 
-            username : null,
-            password :null,
-            loginFail:false
-        }
+        this.state = {
+            username: '',
+            password: '',
+            loginFail: false,
+        };
     }
 
-    login=()=>{
-        console.log(this.state.username+this.state.password)
-        // localStorage.setItem("user",this.state.username);
-        // window.location.reload();
+    login = () => {
+        console.log(this.state.username + this.state.password);
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:8080/login', { username:this.state.username, password:this.state.password })
-        .then(response => {
-        console.log(response.data);
-        localStorage.setItem("user",this.state.username);
-        window.location.reload();
-    })
-    .catch(error => {
-        this.setState({loginFail:true})
-    });
-    }
+        axios
+            .post('http://localhost:8080/login', {
+                username: this.state.username,
+                password: this.state.password,
+            })
+            .then((response) => {
+                console.log(response.data);
+                localStorage.setItem('user', this.state.username);
+                window.location.reload();
+            })
+            .catch((error) => {
+                this.setState({ loginFail: true });
+            });
+    };
 
-    render(){
-        return(
-            <div>
-                <input  type="text" onChange={(event)=>{ this.state.username = event.currentTarget.value;}} placeholder='Username'/>
-                <input  type="password" onChange={(event)=>{ this.state.password = event.currentTarget.value;}} placeholder='Password'/>
-                <button  onClick={this.login}>Log In</button>
-                {this.state.loginFail? <div className='errorMsg'>Wrong username or password, please try again.</div>: null}
+    render() {
+        return (
+            <div className="form-container">
+                <Form>
+                    <Form.Item label="Username">
+                        <Input
+                            prefix={<UserOutlined className="site-form-item-icon" />}
+                            type="text"
+                            placeholder="Username"
+                            onChange={(event) => {
+                                this.setState({ username: event.target.value });
+                            }}
+                        />
+                    </Form.Item>
+
+                    <Form.Item label="Password">
+                        <Input.Password
+                            prefix={<LockOutlined className="site-form-item-icon" />}
+                            placeholder="Password"
+                            onChange={(event) => {
+                                this.setState({ password: event.target.value });
+                            }}
+                        />
+                    </Form.Item>
+
+                    {this.state.loginFail ? (
+                        <Alert type="error" className="errorMsg" message="Wrong username or password, please try again." />
+                    ) : null}
+
+                    <br/>
+
+                    <Form.Item>
+                        <Button type="primary" onClick={this.login}>
+                            Log In
+                        </Button>
+                    </Form.Item>
+                </Form>
             </div>
-         );
+        );
     }
 }

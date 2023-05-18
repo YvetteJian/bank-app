@@ -1,104 +1,116 @@
-import React,{Component} from 'react';
-import axios from "axios";
+import React, { Component } from 'react';
+import axios from 'axios';
+import { Button, Input, message } from 'antd';
 
-
-export default class Main extends Component{
-    constructor(props){
+export default class Main extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             balance: null,
-            inputDepositValue:"",
-            inputWithdrawValue:""
-        }
+            inputDepositValue: '',
+            inputWithdrawValue: '',
+        };
     }
 
-    logout = ()=>{ 
+    logout = () => {
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:8080/logout')
-        .then(response => {
-        console.log(response.data);
-        localStorage.removeItem('user')
-        window.location.reload();
-    })
-    .catch(error => {
-        console.log(error)
-    });
-    }
-
-    getDeposit=()=>{
-        axios.defaults.withCredentials = true;
-        axios.get('http://localhost:8080/check')
-            .then(response => {
+        axios
+            .get('http://localhost:8080/logout')
+            .then((response) => {
                 console.log(response.data);
-                this.setState({ 
-                    balance:response.data.balance,
-                })
+                localStorage.removeItem('user');
+                window.location.reload();
             })
-            .catch(error => {
-                console.log(error)
+            .catch((error) => {
+                console.log(error);
             });
-    }
+    };
+
+    getDeposit = () => {
+        axios.defaults.withCredentials = true;
+        axios
+            .get('http://localhost:8080/check')
+            .then((response) => {
+                console.log(response.data);
+                this.setState({
+                    balance: response.data.balance,
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     withdraw = () => {
-        axios.post('http://localhost:8080/withdraw', {
-            username: localStorage.getItem("user"),
-            amount: this.state.inputWithdrawValue
-        })
+        axios
+            .post('http://localhost:8080/withdraw', {
+                username: localStorage.getItem('user'),
+                amount: this.state.inputWithdrawValue,
+            })
             .then((response) => {
                 console.log(response);
-                this.setState({ 
-                    balance:response.data.balance,
-                    inputWithdrawValue:""
-                    });
-                alert("Withdraw successfully!")
+                this.setState({
+                    balance: response.data.balance,
+                    inputWithdrawValue: '',
+                });
+                message.success('Withdraw successfully!');
             })
             .catch((error) => {
-                alert(error.response.data)
-                console.log(this.state.username+this.state.inputWithdrawValue);
+                message.error(error.response.data);
+                console.log(this.state.username + this.state.inputWithdrawValue);
             });
-    }
+    };
 
     deposit = () => {
-        axios.post('http://localhost:8080/deposit', {
-            username: localStorage.getItem("user"),
-            amount: this.state.inputDepositValue
-        })
+        axios
+            .post('http://localhost:8080/deposit', {
+                username: localStorage.getItem('user'),
+                amount: this.state.inputDepositValue,
+            })
             .then((response) => {
                 console.log(response);
-                this.setState({ 
-                    balance:response.data.balance,
-                    inputDepositValue:"" });
-                alert("Deposit successfully!")
+                this.setState({
+                    balance: response.data.balance,
+                    inputDepositValue: '',
+                });
+                message.success('Deposit successfully!');
             })
             .catch((error) => {
-                alert(error.response.data)
-                console.log(this.state.username+this.state.inputDepositValue);
+                message.error(error.response.data);
+                console.log(this.state.username + this.state.inputDepositValue);
             });
-    }
+    };
 
-
-
-    render(){
-        return(
+    render() {
+        return (
             <div>
-               hello {localStorage.getItem("user")}
-               <button onClick={this.logout}>Log out</button>
+                <div>Hello {localStorage.getItem('user')}</div>
+                <Button type="primary" onClick={this.logout}>
+                    Log out
+                </Button>
                 <div>{this.state.balance}</div>
-                <button onClick={this.getDeposit}>Check your balance!</button>
+                <Button onClick={this.getDeposit}>Check your balance!</Button>
 
-                <input  type="number" value={this.state.inputWithdrawValue} onChange={(event)=>{ this.setState({inputWithdrawValue: event.currentTarget.value});}} placeholder='Amount'/>
-                <button  onClick={this.withdraw}>Withdraw</button>
+                <Input
+                    type="number"
+                    value={this.state.inputWithdrawValue}
+                    onChange={(event) => {
+                        this.setState({ inputWithdrawValue: event.target.value });
+                    }}
+                    placeholder="Amount"
+                />
+                <Button onClick={this.withdraw}>Withdraw</Button>
 
-                <input  type="number" value={this.state.inputDepositValue} onChange={(event)=>{this.setState({inputDepositValue: event.currentTarget.value})}} placeholder='Amount'/>
-                <button  onClick={this.deposit}>Deposit</button>
+                <Input
+                    type="number"
+                    value={this.state.inputDepositValue}
+                    onChange={(event) => {
+                        this.setState({ inputDepositValue: event.target.value });
+                    }}
+                    placeholder="Amount"
+                />
+                <Button onClick={this.deposit}>Deposit</Button>
             </div>
-         );
+        );
     }
 }
-
-// TODO
-// button -> balance
-// text field + button -> withdraw (Deduction)
-//   - update balance
-// text field + button -> deposit (Add)
-//   - update balance

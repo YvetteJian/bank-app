@@ -1,16 +1,13 @@
-
 import React,{Component} from 'react';
 import SignIn from '../SignIn/SignIn';
 import SignUp from '../SignUp.js/SignUp';
 import './Login.css';
 import money from '../../image/money.png'
 
-
-
 class Login extends Component{
     constructor(props){
         super(props);
-        this.state = { 
+        this.state = {
             isLogin: true
         }
     }
@@ -27,40 +24,40 @@ class Login extends Component{
             });
         }
     }
-    
+
     render(){
-        return( 
+        return(
             <div>
-                        <div className='loginPage_main'>
-                            <div>
-                                <img src={money} width="300px" />
-                            </div>
-                            <div>
-                                <h1>Money Bank</h1>
-                            </div>
-                            <div>
-                                <div >
-                                    <div className='loginPage_component'>
-                                       { this.state.isLogin ?
-                                       <SignIn/>:
-                                       <SignUp/>
-                                       }
-                                    </div>
-                                </div>
-                                <div className='signupOption'>
-                                   {
-                                        this.state.isLogin ?
-                                        <div>
-                                                 Don't have an account? <span onClick={this.changeLogin} style={{ "fontWeight":"bold", "color":"#0395F6"}}>Sign up</span>
-                                        </div> :
-                                        <div >
-                                                Have an account? <span onClick={this.changeLogin}  style={{ "fontWeight":"bold", "color":"#0395F6"}}>Sign in</span>
-                                        </div>
-                                    }
-                                </div>
+                <div className='loginPage_main'>
+                    <div>
+                        <img src={money} width="300px"  alt="Money Bank Logo" />
+                    </div>
+                    <div>
+                        <h1>Money Bank</h1>
+                    </div>
+                    <div>
+                        <div >
+                            <div className='loginPage_component'>
+                                { this.state.isLogin ?
+                                    <SignIn/>:
+                                    <SignUp/>
+                                }
                             </div>
                         </div>
-                
+                        <div className='signupOption'>
+                            {
+                                this.state.isLogin ?
+                                    <div>
+                                        Don't have an account? <span onClick={this.changeLogin} style={{ "fontWeight":"bold", "color":"#0395F6"}}>Sign up</span>
+                                    </div> :
+                                    <div >
+                                        Have an account? <span onClick={this.changeLogin}  style={{ "fontWeight":"bold", "color":"#0395F6"}}>Sign in</span>
+                                    </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
             </div>
         );
     }
