@@ -9,7 +9,7 @@ export default class SignUp extends Component {
         this.state = {
             username: null,
             password: null,
-            balance: 0,
+            balance: '0.00',
             errorMsg: null,
         };
     }
@@ -17,11 +17,15 @@ export default class SignUp extends Component {
     signUp = () => {
         console.log(this.state.username + this.state.password + this.state.balance);
         axios.defaults.withCredentials = true;
+
+        // Format the balance to always have 2 decimal places
+        let balance = Number(this.state.balance).toFixed(2);
+
         axios
             .post('http://localhost:8080/register', {
                 username: this.state.username,
                 password: this.state.password,
-                balance: this.state.balance,
+                balance: balance,
             })
             .then((response) => {
                 console.log(response.data);
@@ -33,6 +37,33 @@ export default class SignUp extends Component {
                 this.setState({ errorMsg: error.response.data });
             });
     };
+
+    handleBalanceChange = (event) => {
+        let value = event.target.value;
+        const match = value.match(/^\d*(\.\d{0,2})?$/); // Match any number of digits and up to 2 decimal points
+        if (match) {
+            value = match[0]; // Use the matched value to allow typing the decimal point
+            this.setState({ balance: value });
+        }
+    };
+
+    handleBlur = () => {
+        let value = this.state.balance;
+        if (value.length === 0) {
+            value += "0.00";
+        } else if (!value.includes(".")) {
+            value += ".00";
+        } else {
+            const parts = value.split(".");
+            if (parts[1].length === 0) {
+                value += "00";
+            } else if (parts[1].length === 1) {
+                value += "0";
+            }
+        }
+        this.setState({ balance: value });
+    };
+
 
     render() {
         return (
@@ -61,10 +92,10 @@ export default class SignUp extends Component {
                     <Form.Item label="Balance">
                         <Input
                             prefix={<DollarOutlined className="site-form-item-icon" />}
-                            type="number"
-                            onChange={(event) => {
-                                this.setState({ balance: event.target.value });
-                            }}
+                            type="text"
+                            onChange={this.handleBalanceChange}
+                            onBlur={this.handleBlur}
+                            value={this.state.balance}
                             placeholder="Initial Balance"
                         />
                     </Form.Item>

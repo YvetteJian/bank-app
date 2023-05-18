@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import SignIn from '../SignIn/SignIn';
-import SignUp from '../SignUp.js/SignUp';
+import SignUp from '../SignUp/SignUp';
 import './Login.css';
 import money from '../../image/money.png'
 
