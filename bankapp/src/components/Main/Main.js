@@ -83,33 +83,41 @@ export default class Main extends Component {
 
     render() {
         return (
-            <div>
+            <div className="form-container">
+
                 <div>Hello {localStorage.getItem('user')}</div>
                 <Button type="primary" onClick={this.logout}>
                     Log out
                 </Button>
-                <div>{this.state.balance}</div>
-                <Button onClick={this.getDeposit}>Check your balance!</Button>
 
-                <Input
-                    type="number"
-                    value={this.state.inputWithdrawValue}
-                    onChange={(event) => {
-                        this.setState({ inputWithdrawValue: event.target.value });
-                    }}
-                    placeholder="Amount"
-                />
-                <Button onClick={this.withdraw}>Withdraw</Button>
+                <div className="check-balance">
+                    <div>{this.state.balance}</div>
+                    <Button onClick={this.getDeposit}>Check your balance!</Button>
+                </div>
 
-                <Input
-                    type="number"
-                    value={this.state.inputDepositValue}
-                    onChange={(event) => {
-                        this.setState({ inputDepositValue: event.target.value });
-                    }}
-                    placeholder="Amount"
-                />
-                <Button onClick={this.deposit}>Deposit</Button>
+                <div className="withdraw-balance">
+                    <Input
+                        type="number"
+                        value={this.state.inputWithdrawValue}
+                        onChange={(event) => {
+                            this.setState({ inputWithdrawValue: event.target.value });
+                        }}
+                        placeholder="Amount"
+                    />
+                    <Button onClick={this.withdraw}>Withdraw</Button>
+                </div>
+
+                <div className="deposit-balance">
+                    <Input
+                        type="number"
+                        value={this.state.inputDepositValue}
+                        onChange={(event) => {
+                            this.setState({ inputDepositValue: event.target.value });
+                        }}
+                        placeholder="Amount"
+                    />
+                    <Button onClick={this.deposit}>Deposit</Button>
+                </div>
             </div>
         );
     }

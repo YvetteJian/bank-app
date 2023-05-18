@@ -27,39 +27,36 @@ class Login extends Component{
 
     render(){
         return(
-            <div>
+            <div className="container">
                 <div className='loginPage_main'>
                     <div>
                         <img src={money} width="300px"  alt="Money Bank Logo" />
-                    </div>
-                    <div>
                         <h1>Money Bank</h1>
                     </div>
-                    <div>
-                        <div >
-                            <div className='loginPage_component'>
-                                { this.state.isLogin ?
-                                    <SignIn/>:
-                                    <SignUp/>
-                                }
-                            </div>
-                        </div>
-                        <div className='signupOption'>
-                            {
-                                this.state.isLogin ?
-                                    <div>
-                                        Don't have an account? <span onClick={this.changeLogin} style={{ "fontWeight":"bold", "color":"#0395F6"}}>Sign up</span>
-                                    </div> :
-                                    <div >
-                                        Have an account? <span onClick={this.changeLogin}  style={{ "fontWeight":"bold", "color":"#0395F6"}}>Sign in</span>
-                                    </div>
-                            }
-                        </div>
+
+                    <div className='loginPage_component'>
+                        { this.state.isLogin ?
+                            <SignIn/>:
+                            <SignUp/>
+                        }
+                    </div>
+
+                    <div className='signupOption'>
+                        {
+                            this.state.isLogin ?
+                                <div>
+                                    Don't have an account? <span onClick={this.changeLogin} style={{ "fontWeight":"bold", "color":"#0395F6"}}>Sign up</span>
+                                </div>
+                                :
+                                <div>
+                                    Have an account? <span onClick={this.changeLogin}  style={{ "fontWeight":"bold", "color":"#0395F6"}}>Sign in</span>
+                                </div>
+                        }
                     </div>
                 </div>
-
             </div>
         );
     }
 }
+
 export default Login;

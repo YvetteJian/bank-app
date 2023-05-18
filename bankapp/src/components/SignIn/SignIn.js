@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './SignIn.css';
 import axios from 'axios';
-import { Form, Input, Button, Alert } from 'antd';
+import {Form, Input, Button, Alert, message} from 'antd';
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 
 export default class SignIn extends Component {
@@ -26,9 +26,14 @@ export default class SignIn extends Component {
                 console.log(response.data);
                 localStorage.setItem('user', this.state.username);
                 window.location.reload();
+
+                if (this.state.loginFail) {
+                    message.success('Login successfully!');
+                }
             })
             .catch((error) => {
                 this.setState({ loginFail: true });
+                message.error('Login unsuccessfully!');
             });
     };
 
@@ -56,12 +61,6 @@ export default class SignIn extends Component {
                             }}
                         />
                     </Form.Item>
-
-                    {this.state.loginFail ? (
-                        <Alert type="error" className="errorMsg" message="Wrong username or password, please try again." />
-                    ) : null}
-
-                    <br/>
 
                     <Form.Item>
                         <Button type="primary" onClick={this.login}>
